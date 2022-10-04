@@ -5,17 +5,32 @@ const { addProduct,
         getAllProducts,
         getProduct,
         updateProduct,
-        deleteProduct,
-        apiSuma} = require('../controllers')
+        deleteProduct} = require('../controllers/products')
+
+const { addUser,
+    getAllUsers,
+    getUser,
+    updateUser,
+    deleteUser} = require('../controllers/users')
+    
+    
+
 
 // CRUD PRODUCTOS
-router.post('/products',addProduct)
 router.get('/products',getAllProducts)
 router.get('/products/:productid',getProduct)
+router.post('/products',addProduct)
 router.put('/products/:productid',updateProduct)
 router.delete('/products/:productid',deleteProduct)
 
-// ejercicio suma
-router.get('/api/suma',apiSuma)
+//CRUD USERS
+router.get('/users',getAllUsers)
+router.get('/users/userid',getUser)
+router.post('/users',addUser)
+router.put('/users/:userid',updateUser)
+router.delete('/users/:userid',deleteUser)
+
+
+
 
 module.exports = router
