@@ -25,7 +25,7 @@ router.delete('/products/:productid',deleteProduct)
 
 //CRUD USERS
 router.get('/users',getAllUsers)
-router.get('/users/userid',getUser)
+router.get('/users/:userid',getUser)
 router.post('/users',addUser)
 router.put('/users/:userid',updateUser)
 router.delete('/users/:userid',deleteUser)

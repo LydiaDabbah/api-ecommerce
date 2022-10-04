@@ -7,6 +7,7 @@ const getAllUsers = async (req, res) => {
   try {
     const dbResponse = await connect.query(`
         SELECT 
+            u.user_id,
             u.first_name,
             u.last_name,
             u.email,
@@ -40,6 +41,7 @@ const getUser = async (req, res) => {
     try {
         const dbResponse = await connect.query(`
             SELECT 
+                u.user_id,
                 u.first_name,
                 u.last_name,
                 u.email,
@@ -105,32 +107,30 @@ const addUser = async (req, res) => {
   
 
 const updateUser = async (req, res) => {
-    const id = req.params.productid
-    const { product_name, description, brand_id, category_id,price,sku,image,status,stock } = req.body
+    const id = req.params.userid
+    const { first_name, last_name, email, birth_date, gender_id,password,role_id } = req.body
 
     try {
         const dbResponse = await connect.query(`
-        UPDATE products
+        UPDATE users
           SET
-            product_name=$1,
-            description=$2, 
-            brand_id=$3,
-            category_id=$4,
-            price=$5,
-            sku=$6,
-            image=$7,
-            status=$8,
-            stock=$9
-        WHERE product_id = $10`,
-          [product_name, description, brand_id, category_id,price,sku,image,status,stock, id])
+            first_name=$1,
+            last_name=$2,
+            email=$3, 
+            birth_date=$4, 
+            gender_id=$5,
+            password=$6,
+            role_id=$7
+        WHERE user_id = $8`,
+          [first_name, last_name, email, birth_date, gender_id,password,role_id, id])
     
         if (dbResponse.rowCount > 0) {
           res.status(200).send({
-            message: "Product updated"
+            message: "User updated"
           })
         } else {
           res.status(409).send({
-            message: "Unable to update the product right now"
+            message: "Unable to update the user right now"
           })
         }
     
@@ -142,19 +142,19 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-    const id = req.params.productid
+    const id = req.params.userid
 
     try {
-      const dbResponse = await connect.query(`DELETE FROM products WHERE product_id = $1`, [id])
+      const dbResponse = await connect.query(`DELETE FROM users WHERE user_id = $1`, [id])
   
       if (dbResponse.rowCount > 0) {
         res.status(200).send({
-          message: "Product deleted"
+          message: "User deleted"
         })
 
       } else {
         res.status(409).send({
-          message: "Unable to delete that product"
+          message: "Unable to delete that user"
         })
       }
   
