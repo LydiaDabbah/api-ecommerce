@@ -13,8 +13,14 @@ const { addUser,
     updateUser,
     deleteUser} = require('../controllers/users')
     
+const { addOrder,
+    getAllOrders,
+    getOrderDetails,
+    updateOrder,
+    deleteOrder} = require('../controllers/orders')   
     
-
+const {loginController} = require('../controllers/login')   
+        
 
 // CRUD PRODUCTOS
 router.get('/products',getAllProducts)
@@ -30,7 +36,14 @@ router.post('/users',addUser)
 router.put('/users/:userid',updateUser)
 router.delete('/users/:userid',deleteUser)
 
+//CRUD ORDERS
+router.get('/orders',getAllOrders)
+router.get('/orders/:orderid',getOrderDetails)
+router.post('/orders',addOrder)
+router.put('/orders/:orderid',updateOrder)
 
+//Login
+router.post('/login',loginController)
 
 
 module.exports = router

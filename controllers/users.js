@@ -1,5 +1,6 @@
 const connect = require("../database");
 
+
 //CRUD users    
 
 const getAllUsers = async (req, res) => {
