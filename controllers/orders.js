@@ -149,30 +149,29 @@ const addOrder  = async (req, res) => {
   
 
 const updateOrder = async (req, res) => {
-    const id = req.params.userid
-    const { first_name, last_name, email, birth_date, gender_id,password,role_id } = req.body
+    const orderId = req.params.order_id
+    const productId=req.params.product_id
 
+    const {unitary_price,quantity,item_status } = req.body
+
+    
     try {
         const dbResponse = await connect.query(`
-        UPDATE users
+        UPDATE order_items
           SET
-            first_name=$1,
-            last_name=$2,
-            email=$3, 
-            birth_date=$4, 
-            gender_id=$5,
-            password=$6,
-            role_id=$7
-        WHERE user_id = $8`,
-          [first_name, last_name, email, birth_date, gender_id,password,role_id, id])
+            unitary_price=$1,
+           quantity=$2,
+            item_status=$3,
+        WHERE order_id = $4 AND product_id=$5`,
+          [unitary_price,quantity,item_status,orderId,productId ])
     
         if (dbResponse.rowCount > 0) {
           res.status(200).send({
-            message: "User updated"
+            message: "Item updated"
           })
         } else {
           res.status(409).send({
-            message: "Unable to update the orderright now"
+            message: "Unable to update the item right now"
           })
         }
     

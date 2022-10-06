@@ -41,7 +41,7 @@ router.delete('/users/:userid',deleteUser)
 router.get('/orders',getAllOrders)
 router.get('/orders/:orderid',getOrderDetails)
 router.post('/orders',addOrder)
-router.put('/orders/:orderid',updateOrder)
+router.put('/orders/:orderid/:productid',updateOrder)
 
 //Login
 router.post('/login',loginController)
