@@ -57,7 +57,8 @@ const getOrderDetails = async (req, res) => {
                 ot.product_id, 
                 p.product_name,
                 ot.unitary_price,
-                ot.quantity 
+                ot.quantity, 
+                ot.item_status
             FROM order_items as ot
             LEFT JOIN products as p
             ON p.product_id=ot.product_id
