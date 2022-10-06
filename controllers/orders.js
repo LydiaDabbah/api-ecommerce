@@ -149,9 +149,9 @@ const addOrder  = async (req, res) => {
   
 
 const updateOrder = async (req, res) => {
-    const orderId = req.params.order_id
-    const productId=req.params.product_id
-
+    const orderId = req.params.orderid
+    const productId=req.params.productid
+ 
     const {unitary_price,quantity,item_status } = req.body
 
     
@@ -160,10 +160,10 @@ const updateOrder = async (req, res) => {
         UPDATE order_items
           SET
             unitary_price=$1,
-           quantity=$2,
-            item_status=$3,
-        WHERE order_id = $4 AND product_id=$5`,
-          [unitary_price,quantity,item_status,orderId,productId ])
+            quantity=$2,
+            item_status=$3
+        WHERE(order_id = $4 AND product_id=$5)`,
+        [unitary_price,quantity,item_status,orderId,productId ])
     
         if (dbResponse.rowCount > 0) {
           res.status(200).send({
