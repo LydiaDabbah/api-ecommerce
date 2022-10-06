@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const router = Router()
+const { verifyToken } = require('../middlewares')
 
 const { addProduct,
         getAllProducts,
@@ -25,9 +26,9 @@ const {loginController} = require('../controllers/login')
 // CRUD PRODUCTOS
 router.get('/products',getAllProducts)
 router.get('/products/:productid',getProduct)
-router.post('/products',addProduct)
-router.put('/products/:productid',updateProduct)
-router.delete('/products/:productid',deleteProduct)
+router.post('/products',verifyToken,addProduct)
+router.put('/products/:productid',verifyToken,updateProduct)
+router.delete('/products/:productid',verifyToken,deleteProduct)
 
 //CRUD USERS
 router.get('/users',getAllUsers)
@@ -44,6 +45,5 @@ router.put('/orders/:orderid',updateOrder)
 
 //Login
 router.post('/login',loginController)
-
 
 module.exports = router

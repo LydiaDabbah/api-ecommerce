@@ -21,7 +21,8 @@ const loginController= async(req,res)=>{
         }
   
         const token = createToken(data)
-  
+      
+
         res.status(200).send({
           data: token
         })
