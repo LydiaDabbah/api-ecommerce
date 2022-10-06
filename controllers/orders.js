@@ -120,7 +120,7 @@ const addOrder  = async (req, res) => {
 
       } else {
         res.status(409).send({
-          message: "Unable to add the user right now"
+          message: "Unable to add the order right now"
         })
       }
 
