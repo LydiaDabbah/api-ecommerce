@@ -1,5 +1,6 @@
 const connect = require("../database");
 
+
 //CRUD users    
 
 const getAllOrders = async (req, res) => {
@@ -92,43 +93,56 @@ const getOrderDetails = async (req, res) => {
 };
 
 const addOrder  = async (req, res) => {
-    const {order_id,user_id,status_id, date} = req.body
-  
+    
+    const {user_id,status_id, date,order_items} = req.body
+
     try {
-     const dbResponse = await connect.query(
+
+      // inserta los datos emn ORDERS
+     const dbResponseOrder = await connect.query(
         `INSERT INTO orders(user_id,status_id, date) 
         VALUES  ($1, $2, $3)`,
-        [order_id,user_id,status_id, date]
+        [user_id,status_id, date]
         
       )
 
-     /*  order_items.forEach(element => {
-        const dbResponse2 = await connect.query(
-            `INSERT INTO order_items(product_id, order_id,unitary_price,quantity) 
-            VALUES ($1, $2, $3, $4)`,
-            [element.product_id,order_id,element.unitary_price, quantity]
-            
-          )
-       });*/
+      // recorre el array de order_items e inserta cada row
       
-     
+    for (let i = 0; i < order_items.length; i++) {
+      const dbResponseOrderItems = await connect.query(
+        `INSERT INTO order_items(product_id, order_id,unitary_price,quantity)
+        VALUES	($1,	currval('orders_order_id_seq'::regclass),$2,$3);`,
+        [order_items[i].product_id,order_items[i].unitary_price, order_items[i].quantity]   
+      )
+    }
+      
   
-        if (dbResponse.rowCount > 0) {
-        res.status(201).send({
-          message: "order added"
-        })
+    if (dbResponseOrder.rowCount > 0) {   
+      res.status(201).send({
+        message:` Order added succesfully`
+  })
+     } else{
+      res.status(409).send({
+        message: "Unable to add the order right now"
+      })
+     }
 
-      } else {
+    /*
+    if(dbResponseOrderItems.rowCount > 0) {
+        res.status(201).send({
+          message:`${message} Order_items added succesfully`
+    })
+      }else{
         res.status(409).send({
-          message: "Unable to add the order right now"
+          message: "Unable to add the order items right now"
         })
       }
-
-        } catch (error) {
-        res.status(409).send({
+*/
+    } catch (error) {
+      res.status(409).send({
             error
-        })
-        }
+      })
+    }
   }
   
   
@@ -175,3 +189,23 @@ module.exports = {
   getOrderDetails,
   updateOrder,
  };
+
+ /*
+ {
+  "user_id": 2,
+  "status_id": 1,
+  "date": "2022-10-03T05:00:00.000Z",
+  "order_items": [
+    {
+      "product_id": 1,
+      "unitary_price": "500.00",
+      "quantity": 2
+    },
+    {
+      "product_id": 4,
+      "unitary_price": "1500.00",
+      "quantity": 1
+    }
+  ]
+}
+*/ 
