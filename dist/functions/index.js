@@ -1,6 +1,6 @@
 const express = require('express') // Importamos la libreria express
 const app = express() // Inicializamos la libreria en una constante
-const router = require('./Routes') // Importamos las rutas
+const router = require('../../Routes') // Importamos las rutas
 const serverless= require('serverless-http')
 const cors = require('cors')
 

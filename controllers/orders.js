@@ -110,8 +110,8 @@ const addOrder  = async (req, res) => {
       
     for (let i = 0; i < order_items.length; i++) {
       const dbResponseOrderItems = await connect.query(
-        `INSERT INTO order_items(product_id, order_id,unitary_price,quantity)
-        VALUES	($1,	currval('orders_order_id_seq'::regclass),$2,$3);`,
+        `INSERT INTO order_items(product_id, order_id,unitary_price,quantity,item_status)
+        VALUES	($1,	currval('orders_order_id_seq'::regclass),$2,$3,true);`,
         [order_items[i].product_id,order_items[i].unitary_price, order_items[i].quantity]   
       )
     }
