@@ -89,7 +89,7 @@ const addProduct = async (req, res) => {
   
         if (dbResponse.rowCount > 0) {
         res.status(201).send({
-          message: "Product added"
+          message: dbResponse
         })
 
       } else {
