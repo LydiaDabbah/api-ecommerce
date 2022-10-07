@@ -39,3 +39,5 @@ const loginController= async(req,res)=>{
 }
 
 module.exports={loginController};
+
+// jwt "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJseWRpYWRhYmJhaEBnbWFpbC5jb20iLCJmaXJzdF9uYW1lIjoiTHlkaWEiLCJsYXN0X25hbWUiOiJEYWJiYWgiLCJyb2xlX2lkIjoxLCJpYXQiOjE2NjUxMDA0NDUsImV4cCI6MTY2NTE4Njg0NX0.LU3i0ubhTLBOc_YBb_gywppQ6-wZEYRaJcyoP2oNtXA"

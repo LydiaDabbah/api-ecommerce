@@ -37,45 +37,45 @@ const getOrderDetails = async (req, res) => {
     const id = req.params.orderid
   
     try {
-        const dbResponse= await connect.query(`
-        SELECT
-            o.order_id,
-            o.user_id,
-            u.first_name,
-            u.last_name,
-            O.status_id,s.status, 
-            o.date 
-        FROM orders AS O
-        LEFT JOIN users as u
-        ON u.user_id=o.user_id
-        LEFT JOIN status as s
-        ON s.status_id=o.status_id
-        WHERE order_id=$1`, [id])
+
+      const dbResponse= await connect.query(`
+      SELECT
+          o.order_id,
+          o.user_id,
+          u.first_name,
+          u.last_name,
+          O.status_id,s.status, 
+          o.date 
+      FROM orders AS O
+      LEFT JOIN users as u
+      ON u.user_id=o.user_id
+      LEFT JOIN status as s
+      ON s.status_id=o.status_id
+      WHERE order_id=$1`, [id])
         
-        const dbResponse2= await connect.query(`
-            SELECT 
-                ot.product_id, 
-                p.product_name,
-                ot.unitary_price,
-                ot.quantity, 
-                ot.item_status
-            FROM order_items as ot
-            LEFT JOIN products as p
-            ON p.product_id=ot.product_id
-            WHERE ot.order_id=$1`,[id])
+      const dbResponse2= await connect.query(`
+          SELECT 
+              ot.product_id, 
+              p.product_name,
+              ot.unitary_price,
+              ot.quantity, 
+              ot.item_status
+          FROM order_items as ot
+          LEFT JOIN products as p
+          ON p.product_id=ot.product_id
+          WHERE ot.order_id=$1`,[id])
 
-        if (dbResponse.rowCount > 0) {
-            res.status(200).send({ 
-                "order_id":dbResponse.rows[0].order_id,
-                "user_id":dbResponse.rows[0].user_id,
-                "first_name": dbResponse.rows[0].first_name,
-                "last_name":dbResponse.rows[0].last_name,
-                "status_id": dbResponse.rows[0].status_id,
-                "status":dbResponse.rows[0].status,
-                "date":dbResponse.rows[0].date,
-                "order_items":dbResponse2.rows
-
-            }
+      if (dbResponse.rowCount > 0) {
+          res.status(200).send({ 
+              "order_id":dbResponse.rows[0].order_id,
+              "user_id":dbResponse.rows[0].user_id,
+              "first_name": dbResponse.rows[0].first_name,
+              "last_name":dbResponse.rows[0].last_name,
+              "status_id": dbResponse.rows[0].status_id,
+              "status":dbResponse.rows[0].status,
+              "date":dbResponse.rows[0].date,
+              "order_items":dbResponse2.rows
+          }
                 
         )
 
@@ -121,8 +121,9 @@ const addOrder  = async (req, res) => {
     if (dbResponseOrder.rowCount > 0) {   
       res.status(201).send({
         message:` Order added succesfully`
-  })
-     } else{
+    })
+     
+    } else{
       res.status(409).send({
         message: "Unable to add the order right now"
       })
@@ -149,39 +150,38 @@ const addOrder  = async (req, res) => {
   
 
 const updateOrder = async (req, res) => {
-    const orderId = req.params.orderid
-    const productId=req.params.productid
- 
-    const {unitary_price,quantity,item_status } = req.body
+    
+  const orderId = req.params.orderid
+  const productId=req.params.productid
+  const {unitary_price,quantity,item_status } = req.body
 
-    
-    try {
-        const dbResponse = await connect.query(`
-        UPDATE order_items
-          SET
-            unitary_price=$1,
-            quantity=$2,
-            item_status=$3
-        WHERE(order_id = $4 AND product_id=$5)`,
-        [unitary_price,quantity,item_status,orderId,productId ])
-    
-        if (dbResponse.rowCount > 0) {
-          res.status(200).send({
-            message: "Item updated"
-          })
-        } else {
-          res.status(409).send({
-            message: "Unable to update the item right now"
-          })
-        }
-    
-      } catch (error) {
-        res.status(400).send({
-          error
+  try {
+
+    const dbResponse = await connect.query(`
+    UPDATE order_items
+      SET
+        unitary_price=$1,
+        quantity=$2,
+        item_status=$3
+    WHERE(order_id = $4 AND product_id=$5)`,
+    [unitary_price,quantity,item_status,orderId,productId ])
+
+    if (dbResponse.rowCount > 0) {
+        res.status(200).send({
+          message: "Item updated"
         })
-      }
+    } else {
+        res.status(409).send({
+          message: "Unable to update the item right now"
+        })
+    }
+  
+    } catch (error) {
+      res.status(400).send({
+        error
+    })
+  }
 };
-
 
 module.exports = {
   addOrder,
